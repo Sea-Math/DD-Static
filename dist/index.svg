@@ -24,22 +24,30 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet" />
         
         <script src="./baremux/index.js"></script>
+        <script src="./data/bundle.js"></script>
+        <script src="./data/config.js"></script>
+        <script src="./assets/config.js"></script>
         <script src="./assets/all.js"></script>
         
         <script><![CDATA[
             (function(){
-                const href = window.location && window.location.href ? window.location.href : '';
-                const base = href ? href.slice(0, href.lastIndexOf('/') + 1) : './';
-                window.__SB_ASSET_BASE__ = base;
+                self.__ddxBase = (function(){
+                    var pathname = location.pathname;
+                    var internalIndex = pathname.indexOf('/internal/');
+                    return internalIndex !== -1 ? pathname.substring(0, internalIndex + 1) : new URL('./', location.href).pathname;
+                })();
+
+                window.__SB_ASSET_BASE__ = new URL(self.__ddxBase || './', location.origin).toString();
                 window.__sbAsset = function(path){
-                    return new URL(path.replace(/^\.\//, ''), base).toString();
+                    var cleanPath = (path || '').replace(/^\.\//, '');
+                    return new URL(cleanPath, window.__SB_ASSET_BASE__).toString();
                 };
             })();
         ]]></script>
 
         <script><![CDATA[
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register(window.__sbAsset("sw.js"), { scope: new URL("./", window.__SB_ASSET_BASE__).pathname })
+                navigator.serviceWorker.register(window.__sbAsset("sw.js"), { scope: self.__ddxBase || new URL("./", window.__SB_ASSET_BASE__).pathname })
                     .catch(err => console.warn('Service Worker registration failed:', err));
             }
         ]]></script>
@@ -685,7 +693,7 @@
 
                     initProxy() {
                         try {
-                            const connection = new BareMux.BareMuxConnection(window.__sbAsset("bmworker/worker.js"));
+                            const connection = new BareMux.BareMuxConnection(window.__sbAsset("baremux/worker.js"));
                             connection.setTransport(window.__sbAsset("libcurl/index.mjs"), [{ websocket: this.scramjetServer }]);
                             
                             const { ScramjetController } = $scramjetLoadController();
