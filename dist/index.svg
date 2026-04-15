@@ -669,6 +669,7 @@
                                         decoded = this.scramjetInstance.decodeUrl(winLoc.href);
                                     }
                                     
+                                    decoded = this.normalizeHttpUrl(decoded);
                                     if (decoded && decoded !== winLoc.href && !decoded.startsWith('about:')) {
                                         try {
                                             const newTitle = frame.contentDocument.title;
@@ -749,6 +750,10 @@
 
                     getEncodedProxyUrl(url) {
                         if (!url) return 'about:blank';
+                        const normalized = this.normalizeHttpUrl(url);
+                        try {
+                            if (this.scramjetInstance) {
+                                return this.scramjetInstance.encodeUrl(normalized);
                         try {
                             if (this.scramjetInstance) {
                                 return this.scramjetInstance.encodeUrl(url);
@@ -809,6 +814,7 @@
                             url = "https://" + url;
                         }
                         
+                        url = this.normalizeHttpUrl(url);
                         this.urlInput = url;
                         
                         if (this.activeTab) {
