@@ -625,12 +625,6 @@
                         return !this.activeTab || !this.activeTab.url;
                     },
 
-                    normalizeHttpUrl(url) {
-                        if (!url || typeof url !== 'string') return url;
-                        return url.replace(/^(https?:)\/(?!\/)/i, '$1//');
-                    },
-
-
                     async init() {
                         this.updateTime();
                         
@@ -760,6 +754,9 @@
                         try {
                             if (this.scramjetInstance) {
                                 return this.scramjetInstance.encodeUrl(normalized);
+                        try {
+                            if (this.scramjetInstance) {
+                                return this.scramjetInstance.encodeUrl(url);
                             }
                         } catch(e) { }
                         return 'about:blank';
