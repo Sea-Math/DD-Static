@@ -3,9 +3,9 @@ var _b = self.__ddxBase || "/";
 self.__scramjet$config = {
   prefix: _b + "assets/res/",
   files: {
-    wasm: _b + "assets/wasm.wasm",
-    all: _b + "assets/all.js",
-    sync: _b + "assets/sync.js",
+    wasm: _b + "scram/scramjet.wasm.wasm",
+    all: _b + "scram/scramjet.all.js",
+    sync: _b + "scram/scramjet.sync.js",
   },
   siteFlags: {
 		"https://discord.com/.*": {
